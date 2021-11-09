@@ -158,13 +158,13 @@ function addEmployee() {
             },
             {
                 name: "managerName",
-                type: "rawlist",
+                type: "list",
                 message: "Manger Name:",
                 choices: getManagers()
             }
         ])
         .then(function(answer) {
-            console.log("H");
+            console.log(getManagers().indexOf(answer.managerName) + 1);
             connection.query(`INSERT INTO employee SET ?`,
                 {
                     first_name: answer.firstName,
@@ -175,7 +175,7 @@ function addEmployee() {
                 function(err) {
                     if (err)    
                         throw err;
-                    console.table(val);
+                    console.table(answer);
                     init();
                 }
             )
@@ -184,9 +184,9 @@ function addEmployee() {
 
 function getManagers() {
     console.log("test");
-    managerArray = [];
+    // managerArray = [];
     connection.query(`SELECT first_name,
-                        last_name,
+                        last_name
                     FROM employee
                     WHERE manager_id IS NULL`,
                 function(err, res) {
@@ -202,8 +202,6 @@ function getManagers() {
 }
 
 function getRoles() {
-    console.log("test2");
-    roleArray = [];
     connection.query(`SELECT *
                     FROM role`,
                 function(err, res) {
